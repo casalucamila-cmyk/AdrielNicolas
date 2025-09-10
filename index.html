@@ -814,259 +814,295 @@
     </div>
 
    <script>
-    // Variável global para armazenar o nome do convidado
-    let guestName = '';
-    const scriptUrl = 'https://script.google.com/macros/s/AKfycbxnmNrKQ3V9v5MrEuEHlX4zlMxjkrUsqb8SeGignWp84WIDJEHSV1KBysvXxY6IAGaB/exec'; // SUBSTITUA POR SUA URL DO APPS SCRIPT!
+// Variável global para armazenar o nome do convidado
+let guestName = '';
+const scriptUrl = 'https://script.google.com/macros/s/AKfycbxZ6avJEDQteid9YVscZHz5yYVpRKJZkyYF1OsF3FDChNvcVLoSf3xXa5APFc4UnnFY/exec';
     
-    // Funções para enviar dados para a planilha
-    async function sendDataToSheet(action, data) {
-        try {
-            const response = await fetch(scriptUrl, {
-                method: 'POST',
-                body: JSON.stringify({ ...data, action: action }),
-                headers: { 'Content-Type': 'application/json' }
-            });
-            const result = await response.json();
-            return result;
-        } catch (error) {
-            console.error('Erro na requisição:', error);
-            return { success: false, message: 'Erro na conexão. Tente novamente.' };
-        }
+// Funções para enviar dados para a planilha
+async function sendDataToSheet(action, data) {
+    try {
+        const response = await fetch(scriptUrl, {
+            method: 'POST',
+            body: JSON.stringify({ ...data, action: action }),
+            headers: { 'Content-Type': 'application/json' }
+        });
+        const result = await response.json();
+        return result;
+    } catch (error) {
+        console.error('Erro na requisição:', error);
+        return { success: false, message: 'Erro na conexão. Tente novamente.' };
     }
+}
     
-    // Lidar com o formulário de boas-vindas
-    document.getElementById('welcomeForm').addEventListener('submit', (event) => {
-        event.preventDefault();
-        const inputName = document.getElementById('guestNameInput').value;
-        if (inputName) {
-            guestName = inputName;
-            document.getElementById('welcomeModal').style.display = 'none';
-            document.getElementById('mainContent').style.display = 'block';
-        }
-    });
-
-    // ============== JAVASCRIPT PARA INTERATIVIDADE (Agora com back-end real) ==============
+// Funções para ler dados da planilha
+async function fetchDataFromSheet(action) {
+  try {
+    const response = await fetch(`${scriptUrl}?action=${action}`);
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.error('Erro ao buscar dados:', error);
+    return { success: false, message: 'Erro ao buscar dados.' };
+  }
+}
     
-    // Gerar números da rifa
-    const raffleNumbersGrid = document.getElementById('raffleNumbersGrid');
-    let selectedRaffleNumber = null;
-    const confirmNumberSpan = document.getElementById('confirmNumber');
-    const fraldaSizeSelect = document.getElementById('fraldaSize');
-    const raffleConfirmModal = document.getElementById('raffleConfirmModal');
-    const selectedRaffleNumberInputModal = document.getElementById('selectedRaffleNumberModal');
+// Lidar com o formulário de boas-vindas
+document.getElementById('welcomeForm').addEventListener('submit', (event) => {
+    event.preventDefault();
+    const inputName = document.getElementById('guestNameInput').value;
+    if (inputName) {
+        guestName = inputName;
+        document.getElementById('welcomeModal').style.display = 'none';
+        document.getElementById('mainContent').style.display = 'block';
+        // Carregar dados após a entrada do nome
+        loadPageData();
+    }
+});
 
-    function generateRaffleNumbers() {
-        raffleNumbersGrid.innerHTML = '';
-        for (let i = 1; i <= 100; i++) {
-            const numberDiv = document.createElement('div');
-            numberDiv.classList.add('raffle-number-item');
-            numberDiv.textContent = i;
-            numberDiv.dataset.number = i;
+// ============== JAVASCRIPT PARA INTERATIVIDADE (Agora com back-end real) ==============
 
-            if (i % 7 === 0 || i % 13 === 0) { // Exemplo de números ocupados
-                numberDiv.classList.add('taken');
-            } else {
-                numberDiv.classList.add('available');
-                numberDiv.addEventListener('click', () => {
-                    if (!numberDiv.classList.contains('taken')) {
-                        const currentSelected = document.querySelector('.raffle-number-item.selected');
-                        if (currentSelected) {
-                            currentSelected.classList.remove('selected');
-                        }
-                        numberDiv.classList.add('selected');
-                        selectedRaffleNumber = i;
-                        document.getElementById('selectedRaffleNumber').textContent = i;
-                        
-                        confirmNumberSpan.textContent = i;
-                        selectedRaffleNumberInputModal.value = i;
-                        
-                        if (i >= 1 && i <= 20) {
-                            fraldaSizeSelect.value = 'P';
-                        } else if (i >= 21 && i <= 70) {
-                            fraldaSizeSelect.value = 'M';
-                        } else if (i >= 71 && i <= 100) {
-                            fraldaSizeSelect.value = 'G';
-                        }
-                        
-                        raffleConfirmModal.style.display = 'flex';
+// Gerar números da rifa
+const raffleNumbersGrid = document.getElementById('raffleNumbersGrid');
+let selectedRaffleNumber = null;
+const confirmNumberSpan = document.getElementById('confirmNumber');
+const fraldaSizeSelect = document.getElementById('fraldaSize');
+const raffleConfirmModal = document.getElementById('raffleConfirmModal');
+const selectedRaffleNumberInputModal = document.getElementById('selectedRaffleNumberModal');
+
+async function generateRaffleNumbers() {
+    raffleNumbersGrid.innerHTML = '';
+    const result = await fetchDataFromSheet('getRaffleNumbers');
+    const takenNumbers = result.success ? result.numbers.map(n => parseInt(n)) : [];
+    
+    for (let i = 1; i <= 100; i++) {
+        const numberDiv = document.createElement('div');
+        numberDiv.classList.add('raffle-number-item');
+        numberDiv.textContent = i;
+        numberDiv.dataset.number = i;
+
+        if (takenNumbers.includes(i)) {
+            numberDiv.classList.add('taken');
+        } else {
+            numberDiv.classList.add('available');
+            numberDiv.addEventListener('click', () => {
+                if (!numberDiv.classList.contains('taken')) {
+                    const currentSelected = document.querySelector('.raffle-number-item.selected');
+                    if (currentSelected) {
+                        currentSelected.classList.remove('selected');
                     }
-                });
-            }
-            raffleNumbersGrid.appendChild(numberDiv);
+                    numberDiv.classList.add('selected');
+                    selectedRaffleNumber = i;
+                    document.getElementById('selectedRaffleNumber').textContent = i;
+                    
+                    confirmNumberSpan.textContent = i;
+                    selectedRaffleNumberInputModal.value = i;
+                    
+                    if (i >= 1 && i <= 20) {
+                        fraldaSizeSelect.value = 'P';
+                    } else if (i >= 21 && i <= 70) {
+                        fraldaSizeSelect.value = 'M';
+                    } else if (i >= 71 && i <= 100) {
+                        fraldaSizeSelect.value = 'G';
+                    }
+                    
+                    raffleConfirmModal.style.display = 'flex';
+                }
+            });
         }
+        raffleNumbersGrid.appendChild(numberDiv);
     }
-    generateRaffleNumbers();
-
-    // Lidar com o formulário de confirmação da rifa no modal
-    document.getElementById('raffleConfirmForm').addEventListener('submit', async (event) => {
-        event.preventDefault();
-        const rsvpMessage = document.getElementById('rsvpMessage');
-        const horario = document.getElementById('horario').value;
-        
-        if (!horario) {
-            rsvpMessage.textContent = 'Por favor, selecione um horário no formulário principal antes de confirmar a rifa.';
-            rsvpMessage.style.color = 'red';
-            raffleConfirmModal.style.display = 'none';
-            return;
-        }
-
-        const data = {
-            nome: guestName,
-            numeroRifa: document.getElementById('selectedRaffleNumberModal').value,
-            tamanhoFralda: document.getElementById('fraldaSize').value,
-            horario: horario
-        };
-
-        const result = await sendDataToSheet('raffle', data);
-        
-        if (result.success) {
-            rsvpMessage.textContent = `Obrigado, ${guestName}! Seu horário (${horario}) e número da rifa (${data.numeroRifa}) foram registrados!`;
-            rsvpMessage.style.color = 'green';
-            const selectedDiv = document.querySelector(`.raffle-number-item[data-number="${data.numeroRifa}"]`);
-            if (selectedDiv) {
-                selectedDiv.classList.remove('selected', 'available');
-                selectedDiv.classList.add('taken');
-            }
-            selectedRaffleNumber = null;
-            document.getElementById('selectedRaffleNumber').textContent = 'Nenhum';
-        } else {
-            rsvpMessage.textContent = `Erro ao registrar: ${result.message}`;
-            rsvpMessage.style.color = 'red';
-        }
-        
+}
+    
+// Lidar com o formulário de confirmação da rifa no modal
+document.getElementById('raffleConfirmForm').addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const rsvpMessage = document.getElementById('rsvpMessage');
+    const horario = document.getElementById('horario').value;
+    
+    if (!horario) {
+        rsvpMessage.textContent = 'Por favor, selecione um horário no formulário principal antes de confirmar a rifa.';
+        rsvpMessage.style.color = 'red';
         raffleConfirmModal.style.display = 'none';
-    });
-
-    // Cancelar a seleção da rifa
-    document.getElementById('cancelRaffleBtn').addEventListener('click', () => {
-        const currentSelected = document.querySelector('.raffle-number-item.selected');
-        if (currentSelected) {
-            currentSelected.classList.remove('selected');
-        }
-        document.getElementById('selectedRaffleNumber').textContent = 'Nenhum';
-        selectedRaffleNumber = null;
-        raffleConfirmModal.style.display = 'none';
-    });
-
-
-    // ---- Submissão do Formulário de Agendamento ----
-    document.getElementById('rsvpForm').addEventListener('submit', async function(event) {
-        event.preventDefault();
-        const horario = document.getElementById('horario').value;
-        const rsvpMessage = document.getElementById('rsvpMessage');
-
-        const data = {
-            nome: guestName,
-            horario: horario
-        };
-        
-        const result = await sendDataToSheet('rsvp', data);
-
-        if (result.success) {
-            rsvpMessage.textContent = `Olá, ${guestName}! Seu horário (${horario}) foi agendado com sucesso!`;
-            rsvpMessage.style.color = 'green';
-            this.reset();
-        } else {
-            rsvpMessage.textContent = `Erro ao agendar: ${result.message}`;
-            rsvpMessage.style.color = 'red';
-        }
-    });
-
-    // ---- Submissão do Formulário do Quiz ----
-    const quizForm = document.getElementById('quizForm');
-    quizForm.addEventListener('submit', async function(event) {
-        event.preventDefault();
-        const quizMessage = document.getElementById('quizMessage');
-        
-        const data = {
-            nome: guestName,
-            peso: document.querySelector('input[name="pergunta1"]:checked')?.value,
-            nascimento: document.querySelector('input[name="pergunta2"]:checked')?.value,
-            parecido: document.querySelector('input[name="pergunta3"]:checked')?.value,
-            conselho: document.getElementById('pergunta4').value
-        };
-        
-        const result = await sendDataToSheet('quiz', data);
-        
-        if (result.success) {
-            quizMessage.textContent = 'Obrigado por participar! Seus palpites foram registrados!';
-            quizMessage.style.color = 'green';
-            this.reset();
-        } else {
-            quizMessage.textContent = `Erro ao enviar: ${result.message}`;
-            quizMessage.style.color = 'red';
-        }
-    });
-
-    // Lógica do Carrossel e Barra de Progresso do Quiz
-    const quizSlides = document.querySelector('.quiz-slides');
-    const quizProgress = document.getElementById('quizProgress');
-    let currentSlide = 0;
-    const slides = document.querySelectorAll('.quiz-slide');
-    const totalSlides = slides.length;
-    
-    document.querySelectorAll('.next-slide').forEach(button => {
-        button.addEventListener('click', () => {
-            if (currentSlide < totalSlides - 1) {
-                currentSlide++;
-                updateQuizCarousel();
-            }
-        });
-    });
-    
-    document.querySelectorAll('.prev-slide').forEach(button => {
-        button.addEventListener('click', () => {
-            if (currentSlide > 0) {
-                currentSlide--;
-                updateQuizCarousel();
-            }
-        });
-    });
-    
-    function updateQuizCarousel() {
-        quizSlides.style.transform = `translateX(-${currentSlide * 100}%)`;
-        updateProgressBar();
+        return;
     }
 
-    function updateProgressBar() {
-        const progress = ((currentSlide + 1) / totalSlides) * 100;
-        quizProgress.style.width = `${progress}%`;
-    }
+    const data = {
+        nome: guestName,
+        numeroRifa: document.getElementById('selectedRaffleNumberModal').value,
+        tamanhoFralda: document.getElementById('fraldaSize').value,
+        horario: horario
+    };
 
+    const result = await sendDataToSheet('raffle', data);
+    
+    if (result.success) {
+        rsvpMessage.textContent = `Obrigado, ${guestName}! Seu horário (${horario}) e número da rifa (${data.numeroRifa}) foram registrados!`;
+        rsvpMessage.style.color = 'green';
+        // Recarrega os números da rifa para refletir a nova ocupação
+        generateRaffleNumbers();
+    } else {
+        rsvpMessage.textContent = `Erro ao registrar: ${result.message}`;
+        rsvpMessage.style.color = 'red';
+    }
+    
+    raffleConfirmModal.style.display = 'none';
+    selectedRaffleNumber = null;
+    document.getElementById('selectedRaffleNumber').textContent = 'Nenhum';
+});
+
+// Cancelar a seleção da rifa
+document.getElementById('cancelRaffleBtn').addEventListener('click', () => {
+    const currentSelected = document.querySelector('.raffle-number-item.selected');
+    if (currentSelected) {
+        currentSelected.classList.remove('selected');
+    }
+    document.getElementById('selectedRaffleNumber').textContent = 'Nenhum';
+    selectedRaffleNumber = null;
+    raffleConfirmModal.style.display = 'none';
+});
+
+
+// ---- Submissão do Formulário de Agendamento ----
+document.getElementById('rsvpForm').addEventListener('submit', async function(event) {
+    event.preventDefault();
+    const horario = document.getElementById('horario').value;
+    const rsvpMessage = document.getElementById('rsvpMessage');
+
+    const data = {
+        nome: guestName,
+        horario: horario
+    };
+    
+    const result = await sendDataToSheet('rsvp', data);
+
+    if (result.success) {
+        rsvpMessage.textContent = `Olá, ${guestName}! Seu horário (${horario}) foi agendado com sucesso!`;
+        rsvpMessage.style.color = 'green';
+        this.reset();
+    } else {
+        rsvpMessage.textContent = `Erro ao agendar: ${result.message}`;
+        rsvpMessage.style.color = 'red';
+    }
+});
+
+// ---- Submissão do Formulário do Quiz ----
+const quizForm = document.getElementById('quizForm');
+quizForm.addEventListener('submit', async function(event) {
+    event.preventDefault();
+    const quizMessage = document.getElementById('quizMessage');
+    
+    const data = {
+        nome: guestName,
+        peso: document.querySelector('input[name="pergunta1"]:checked')?.value,
+        nascimento: document.querySelector('input[name="pergunta2"]:checked')?.value,
+        parecido: document.querySelector('input[name="pergunta3"]:checked')?.value,
+        conselho: document.getElementById('pergunta4').value
+    };
+    
+    const result = await sendDataToSheet('quiz', data);
+    
+    if (result.success) {
+        quizMessage.textContent = 'Obrigado por participar! Seus palpites foram registrados!';
+        quizMessage.style.color = 'green';
+        this.reset();
+    } else {
+        quizMessage.textContent = `Erro ao enviar: ${result.message}`;
+        quizMessage.style.color = 'red';
+    }
+});
+
+// Lógica do Carrossel e Barra de Progresso do Quiz
+const quizSlides = document.querySelector('.quiz-slides');
+const quizProgress = document.getElementById('quizProgress');
+let currentSlide = 0;
+const slides = document.querySelectorAll('.quiz-slide');
+const totalSlides = slides.length;
+    
+document.querySelectorAll('.next-slide').forEach(button => {
+    button.addEventListener('click', () => {
+        if (currentSlide < totalSlides - 1) {
+            currentSlide++;
+            updateQuizCarousel();
+        }
+    });
+});
+    
+document.querySelectorAll('.prev-slide').forEach(button => {
+    button.addEventListener('click', () => {
+        if (currentSlide > 0) {
+            currentSlide--;
+            updateQuizCarousel();
+        }
+    });
+});
+    
+function updateQuizCarousel() {
+    quizSlides.style.transform = `translateX(-${currentSlide * 100}%)`;
     updateProgressBar();
+}
 
-    // ---- Submissão do Formulário do Mural de Recados ----
-    document.getElementById('guestbookForm').addEventListener('submit', async function(event) {
-        event.preventDefault();
-        const mensagemMural = document.getElementById('mensagemMural').value;
-        const guestbookMessage = document.getElementById('guestbookMessage');
-        const guestbookMessagesContainer = document.getElementById('guestbookMessagesContainer');
+function updateProgressBar() {
+    const progress = ((currentSlide + 1) / totalSlides) * 100;
+    quizProgress.style.width = `${progress}%`;
+}
 
-        const data = {
-            nome: guestName,
-            mensagem: mensagemMural
-        };
+// ---- Lógica do Mural de Recados ----
+const guestbookMessagesContainer = document.getElementById('guestbookMessagesContainer');
 
-        const result = await sendDataToSheet('guestbook', data);
-        
-        if (result.success) {
+async function loadGuestbookMessages() {
+    guestbookMessagesContainer.innerHTML = ''; // Limpa o conteúdo atual
+    const result = await fetchDataFromSheet('getMuralMessages');
+    if (result.success && result.messages.length > 0) {
+        result.messages.reverse().forEach(msg => { // Inverte para mostrar as mais recentes primeiro
             const newMessageCard = document.createElement('div');
             newMessageCard.classList.add('message-card');
-            newMessageCard.innerHTML = `<strong>${guestName}</strong><p>${mensagemMural}</p>`;
-            guestbookMessagesContainer.prepend(newMessageCard);
-            guestbookMessage.textContent = 'Sua mensagem foi adicionada ao mural com sucesso!';
-            guestbookMessage.style.color = 'green';
-            this.reset();
-        } else {
-            guestbookMessage.textContent = `Erro ao enviar: ${result.message}`;
-            guestbookMessage.style.color = 'red';
-        }
-    });
+            newMessageCard.innerHTML = `<strong>${msg.nome}</strong><p>${msg.mensagem}</p>`;
+            guestbookMessagesContainer.appendChild(newMessageCard);
+        });
+    } else {
+        guestbookMessagesContainer.innerHTML = `<p style="text-align:center;">Nenhum recado ainda. Seja o primeiro a deixar uma mensagem!</p>`;
+    }
+}
 
-    // Exibir o modal de boas-vindas ao carregar a página
-    document.addEventListener('DOMContentLoaded', () => {
-        document.getElementById('welcomeModal').style.display = 'flex';
-    });
+document.getElementById('guestbookForm').addEventListener('submit', async function(event) {
+    event.preventDefault();
+    const mensagemMural = document.getElementById('mensagemMural').value;
+    const guestbookMessage = document.getElementById('guestbookMessage');
+
+    const data = {
+        nome: guestName,
+        mensagem: mensagemMural
+    };
+
+    const result = await sendDataToSheet('guestbook', data);
+    
+    if (result.success) {
+        guestbookMessage.textContent = 'Sua mensagem foi adicionada ao mural com sucesso!';
+        guestbookMessage.style.color = 'green';
+        this.reset();
+        // Adiciona a nova mensagem localmente sem precisar recarregar
+        const newMessageCard = document.createElement('div');
+        newMessageCard.classList.add('message-card');
+        newMessageCard.innerHTML = `<strong>${guestName}</strong><p>${mensagemMural}</p>`;
+        guestbookMessagesContainer.prepend(newMessageCard);
+    } else {
+        guestbookMessage.textContent = `Erro ao enviar: ${result.message}`;
+        guestbookMessage.style.color = 'red';
+    }
+});
+
+// Funções para carregar dados ao iniciar a página
+function loadPageData() {
+    generateRaffleNumbers();
+    loadGuestbookMessages();
+    updateProgressBar();
+}
+
+// Exibir o modal de boas-vindas ao carregar a página
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('welcomeModal').style.display = 'flex';
+});
 </script>
 </body>
 </html>
+
