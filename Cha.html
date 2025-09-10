@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chá de Fraldas Drive-Thru do Adriel Nicolas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cor-principal: #3CB371; /* Verde-Mar */
+            --cor-secundaria: #98FB98; /* Verde Menta */
+            --cor-terciaria: #F0FFF0; /* Melão Claro */
+            --cor-texto: #333;
+            --cor-fundo: #F0FFF0; /* Melão */
+            --cor-borda: #C0E8C0;
+            --sombra-leve: rgba(0,0,0,0.1);
+            --sombra-media: rgba(0,0,0,0.2);
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: var(--cor-fundo);
+            color: var(--cor-texto);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+            opacity: 0;
+            animation: fadeIn 1s forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background-color: #fff;
+            box-shadow: 0 0 20px var(--sombra-leve);
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 20px;
+            padding-bottom: 30px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--cor-principal), var(--cor-secundaria));
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            border-bottom: 5px solid var(--cor-principal);
+            position: relative;
+        }
+
+        header h1 {
+            font-family: 'Pacifico', cursive;
+            font-size: 3.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px var(--sombra-leve);
+            animation: slideInFromTop 1s ease-out;
+        }
+        
+        header p {
+            font-size: 1.2em;
+            font-weight: 300;
+        }
+
+        .header-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid white;
+            margin-top: 20px;
+            box-shadow: 0 4px 10px var(--sombra-leve);
+            animation: bounceIn 1.5s ease-out;
+        }
+
+        section {
+            padding: 30px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--cor-borda);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: slideInFromBottom 1s ease-out forwards;
+        }
+        
+        section:nth-of-type(2) { animation-delay: 0.3s; }
+        section:nth-of-type(3) { animation-delay: 0.6s; }
+        section:nth-of-type(4) { animation-delay: 0.9s; }
+        section:nth-of-type(5) { animation-delay: 1.2s; }
+        section:nth-of-type(6) { animation-delay: 1.5s; }
+        section:nth-of-type(7) { animation-delay: 1.8s; }
+
+        section:last-of-type {
+            border-bottom: none;
+        }
+
+        h2 {
+            font-family: 'Pacifico', cursive;
+            color: var(--cor-principal);
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 2.2em;
+            position: relative;
+        }
+
+        h2::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background-color: var(--cor-secundaria);
+            margin: 10px auto 0;
+            border-radius: 5px;
+        }
+
+        .info-block {
+            background-color: #fefefe;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 1px solid var(--cor-borda);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .info-block:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 10px var(--sombra-leve);
+        }
+
+        .info-block i {
+            font-size: 2em;
+            color: var(--cor-secundaria);
+        }
+
+        .info-block p {
+            margin: 0;
+            font-size: 1.1em;
+        }
+
+        .info-block strong {
+            color: var(--cor-principal);
+        }
+
+        .how-it-works-list {
+            list-style: none;
+            padding: 0;
+            text-align: center;
+        }
+
+        .how-it-works-list li {
+            background-color: #e6fff0;
+            margin: 10px auto;
+            padding: 15px 20px;
+            border-radius: 8px;
+            max-width: 450px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            font-size: 1.1em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            justify-content: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .how-it-works-list li:hover {
+            transform: scale(1.05);
+        }
+        
+        .how-it-works-list li i {
+            color: var(--cor-secundaria);
+            font-size: 1.5em;
+        }
+
+        /* Tabela da Rifa */
+        .raffle-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .raffle-table th, .raffle-table td {
+            border: 1px solid var(--cor-borda);
+            padding: 12px;
+            text-align: center;
+        }
+
+        .raffle-table th {
+            background-color: var(--cor-secundaria);
+            color: white;
+            font-weight: 700;
+        }
+
+        .raffle-table td {
+            background-color: #f9f9f9;
+        }
+
+        /* Formulários */
+        form {
+            background-color: #fefefe;
+            border: 1px solid var(--cor-borda);
+            padding: 25px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 700;
+            color: var(--cor-principal);
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group textarea,
+        .form-group select {
+            width: calc(100% - 20px);
+            padding: 12px;
+            border: 1px solid var(--cor-borda);
+            border-radius: 8px;
+            font-size: 1em;
+            box-sizing: border-box;
+        }
+        .form-group select {
+            width: 100%;
+            background-color: white;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        button {
+            background-color: var(--cor-principal);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            display: block;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #2E8B57; /* Verde-Mar Escuro */
+            transform: translateY(-2px);
+        }
+        
+        /* Modal de Entrada */
+        .modal {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.6);
+            backdrop-filter: blur(5px);
+            animation: fadeIn 0.5s;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            animation: zoomIn 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+        
+        .modal-content h3 {
+            font-family: 'Pacifico', cursive;
+            color: var(--cor-principal);
+            margin-bottom: 15px;
+        }
+        
+        .modal-content input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid var(--cor-borda);
+            border-radius: 5px;
+        }
+
+        @keyframes zoomIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        /* Grid de números da rifa */
+        .raffle-numbers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(45px, 1fr));
+            gap: 5px;
+            margin-top: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .raffle-number-item {
+            background-color: #f0fff5;
+            border: 1px solid var(--cor-secundaria);
+            border-radius: 5px;
+            padding: 8px 0;
+            text-align: center;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.9em;
+        }
+
+        .raffle-number-item:hover:not(.selected):not(.taken) {
+            background-color: var(--cor-secundaria);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .raffle-number-item.selected {
+            background-color: var(--cor-principal);
+            color: white;
+            border-color: var(--cor-principal);
+            transform: scale(1.05);
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1.05); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1.05); }
+        }
+
+        .raffle-number-item.taken {
+            background-color: #DDD;
+            color: #777;
+            text-decoration: line-through;
+            cursor: not-allowed;
+            border-color: #CCC;
+            opacity: 0.6;
+        }
+        
+        /* Modal de Confirmação da Rifa */
+        .raffle-confirm-modal {
+            display: none; /* Inicia oculto */
+            position: fixed;
+            z-index: 101; /* Acima do modal de nome */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.7);
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.5s;
+        }
+        
+        .raffle-confirm-modal .modal-content {
+            background-color: white;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            max-width: 350px;
+        }
+
+        /* Estilo do Quiz - Novo Design */
+        .quiz-carousel {
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+        }
+
+        .quiz-slides {
+            display: flex;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .quiz-slide {
+            min-width: 100%;
+            box-sizing: border-box;
+            background-color: var(--cor-terciaria);
+            border: 1px solid var(--cor-borda);
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 12px var(--sombra-leve);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 250px;
+        }
+        
+        .quiz-question-content {
+            flex-grow: 1;
+        }
+        
+        .quiz-question-content label {
+            font-size: 1.2em;
+            color: var(--cor-principal);
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: block;
+        }
+        
+        .quiz-options {
+            text-align: left;
+            margin-top: 15px;
+        }
+
+        .quiz-options div {
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .quiz-options div:hover {
+            transform: translateX(5px);
+        }
+
+        .quiz-options input[type="radio"] {
+            margin-right: 10px;
+            transform: scale(1.2);
+            accent-color: var(--cor-principal);
+        }
+
+        .carousel-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 25px;
+        }
+        
+        .carousel-buttons button {
+            width: 48%;
+            margin: 0;
+            background-color: var(--cor-secundaria);
+            color: var(--cor-texto);
+            font-weight: bold;
+            border-radius: 20px;
+        }
+        
+        .carousel-buttons button:hover {
+            background-color: var(--cor-principal);
+            color: white;
+        }
+        
+        /* Barra de Progresso do Quiz */
+        .quiz-progress-bar {
+            width: 100%;
+            height: 8px;
+            background-color: #E0E0E0;
+            border-radius: 5px;
+            margin-top: 15px;
+            overflow: hidden;
+        }
+
+        .quiz-progress {
+            height: 100%;
+            background-color: var(--cor-principal);
+            width: 0%;
+            transition: width 0.5s ease-in-out;
+        }
+
+        /* Mural de Recados */
+        .guestbook-messages {
+            margin-top: 20px;
+            display: grid;
+            gap: 15px;
+        }
+
+        .message-card {
+            background-color: #fefefe;
+            border: 1px solid var(--cor-borda);
+            border-left: 5px solid var(--cor-secundaria);
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+            animation: slideInFromLeft 0.5s ease-out;
+        }
+        
+        .message-card:hover {
+            transform: translateX(5px);
+        }
+
+        .message-card strong {
+            color: var(--cor-principal);
+            display: block;
+            margin-bottom: 5px;
+            font-size: 1.1em;
+        }
+
+        .message-card p {
+            margin: 0;
+        }
+
+        /* Instagram Feed Placeholder */
+        .instagram-feed {
+            text-align: center;
+            padding: 40px 20px;
+            background-color: #f0fff5;
+            border-radius: 10px;
+            margin-top: 30px;
+            border: 1px dashed var(--cor-secundaria);
+        }
+
+        .instagram-feed p {
+            font-style: italic;
+            color: #666;
+        }
+
+        .instagram-feed .hashtag {
+            font-weight: bold;
+            color: var(--cor-principal);
+        }
+
+        /* Ícones - Font Awesome */
+        @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css');
+
+        /* Animações Keyframes */
+        @keyframes slideInFromTop {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        @keyframes bounceIn {
+            0% { transform: scale(0.1); opacity: 0; }
+            60% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes slideInFromBottom {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes slideInFromLeft {
+            from { transform: translateX(-50px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        /* Responsividade */
+        @media (max-width: 600px) {
+            header h1 { font-size: 2.5em; }
+            header p { font-size: 1em; }
+            h2 { font-size: 1.8em; }
+            .container { margin: 10px; border-radius: 10px; }
+            section { padding: 20px; }
+            .info-block { flex-direction: column; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="welcomeModal" class="modal">
+        <div class="modal-content">
+            <h3 id="welcomeMessage">Olá, bem-vindo! Qual o seu nome?</h3>
+            <form id="welcomeForm">
+                <input type="text" id="guestNameInput" placeholder="Seu nome" required>
+                <button type="submit">Entrar</button>
+            </form>
+        </div>
+    </div>
+    
+    <div id="raffleConfirmModal" class="raffle-confirm-modal">
+        <div class="modal-content">
+            <h3>Confirme sua escolha</h3>
+            <p>Você selecionou o número <strong id="confirmNumber"></strong>.</p>
+            <p>Escolha o tamanho da fralda correspondente:</p>
+            <form id="raffleConfirmForm">
+                <div class="form-group">
+                    <label for="fraldaSize">Tamanho da Fralda:</label>
+                    <select id="fraldaSize" name="fraldaSize" required disabled>
+                        <option value="">Selecione um tamanho</option>
+                        <option value="P">Tamanho P (1 a 20)</option>
+                        <option value="M">Tamanho M (21 a 70)</option>
+                        <option value="G">Tamanho G (71 a 100)</option>
+                    </select>
+                </div>
+                <input type="hidden" id="selectedRaffleNumberModal" name="selectedRaffleNumber">
+                <button type="submit">Confirmar Rifa</button>
+                <button type="button" id="cancelRaffleBtn" style="background-color: #B22222;">Cancelar</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="container" id="mainContent" style="display: none;">
+        <header>
+            <img src="https://via.placeholder.com/150/98FB98/3CB371?text=Adriel" alt="Foto do Bebê Adriel Nicolas" class="header-image">
+            <h1>Chá de Fraldas Drive-Thru do Adriel Nicolas!</h1>
+            <p>Com carinho, convidamos você para celebrar a chegada do nosso pequeno.</p>
+            <p>Mal podemos esperar para compartilhar esse momento com você!</p>
+        </header>
+
+        <section id="informacoes-gerais">
+            <h2>Informações Importantes</h2>
+            <div class="info-block">
+                <i class="fas fa-calendar-alt"></i>
+                <p><strong>Data:</strong> 9 de novembro</p>
+            </div>
+            <div class="info-block">
+                <i class="fas fa-clock"></i>
+                <p><strong>Horário:</strong> Das 08h00 às 10h30m</p>
+            </div>
+            <div class="info-block">
+                <i class="fas fa-map-marker-alt"></i>
+                <p><strong>Local:</strong> Rua Dom Aureliano Matos, 2184, Cruzeiro - Itapipoca/CE. Nossa casa!</p>
+            </div>
+        </section>
+
+        <section id="como-funciona">
+            <h2>Como Vai Funcionar?</h2>
+            <ul class="how-it-works-list">
+                <li><i class="fas fa-car"></i> Chegue de carro no seu horário agendado.</li>
+                <li><i class="fas fa-gift"></i> Receba seu mimo especial de agradecimento.</li>
+                <li><i class="fas fa-camera"></i> Registre uma foto conosco para guardar de recordação!</li>
+                <li><i class="fas fa-baby"></i> Celebre a chegada do Adriel Nicolas com a gente!</li>
+            </ul>
+        </section>
+
+        <section id="rifa-fraldas">
+            <h2>Nossa Rifa de Fraldas</h2>
+            <p style="text-align: center; margin-bottom: 25px;">Ajude o Adriel com as fraldas e concorra a um prêmio especial! Escolha seu número e o tamanho:</p>
+
+            <table class="raffle-table">
+                <thead>
+                    <tr>
+                        <th>Números</th>
+                        <th>Tamanho da Fralda</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1 a 20</td>
+                        <td>P</td>
+                    </tr>
+                    <tr>
+                        <td>21 a 70</td>
+                        <td>M</td>
+                    </tr>
+                    <tr>
+                        <td>71 a 100</td>
+                        <td>G</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Escolha seu número da sorte!</h3>
+            <p style="text-align: center; font-size: 0.9em; color: #666;">Clique em um número disponível para reservá-lo. (Verde = Disponível, Cinza = Ocupado)</p>
+            <div class="raffle-numbers-grid" id="raffleNumbersGrid">
+                </div>
+            <p style="text-align: center; margin-top: 15px; font-weight: bold;">Seu número selecionado: <span id="selectedRaffleNumber">Nenhum</span></p>
+        </section>
+
+        <section id="confirmacao-agendamento">
+            <h2>Confirme Sua Presença e Agende!</h2>
+            <p style="text-align: center;">Por favor, agende seu horário para garantirmos a melhor recepção possível.</p>
+            <form id="rsvpForm">
+                <div class="form-group">
+                    <label for="horario">Escolha seu Horário (entre 08h00 e 10h30m):</label>
+                    <select id="horario" name="horario" required>
+                        <option value="">Selecione um horário</option>
+                        <option value="08:00">08:00</option>
+                        <option value="08:15">08:15</option>
+                        <option value="08:30">08:30</option>
+                        <option value="08:45">08:45</option>
+                        <option value="09:00">09:00</option>
+                        <option value="09:15">09:15</option>
+                        <option value="09:30">09:30</option>
+                        <option value="09:45">09:45</option>
+                        <option value="10:00">10:00</option>
+                        <option value="10:15">10:15</option>
+                        <option value="10:30">10:30</option>
+                    </select>
+                </div>
+                <button type="submit">Confirmar e Agendar!</button>
+            </form>
+            <p id="rsvpMessage" style="text-align: center; margin-top: 20px; font-weight: bold;"></p>
+        </section>
+
+        <section id="quiz">
+            <h2>Quiz: Adivinhe o Bebê!</h2>
+            <p style="text-align: center; margin-bottom: 25px;">Teste seus conhecimentos e dê seus palpites sobre o Adriel Nicolas!</p>
+            
+            <div class="quiz-progress-bar">
+                <div class="quiz-progress" id="quizProgress"></div>
+            </div>
+            
+            <div class="quiz-carousel">
+                <form id="quizForm">
+                    <div class="quiz-slides">
+                        <div class="quiz-slide" data-index="0">
+                            <div class="quiz-question-content">
+                                <label>1. Qual será o peso aproximado do Adriel ao nascer?</label>
+                                <div class="quiz-options">
+                                    <div><input type="radio" name="pergunta1" value="menos3kg" id="p1a" required><label for="p1a">Menos de 3kg</label></div>
+                                    <div><input type="radio" name="pergunta1" value="entre3e35kg" id="p1b"><label for="p1b">Entre 3kg e 3.5kg</label></div>
+                                    <div><input type="radio" name="pergunta1" value="mais35kg" id="p1c"><label for="p1c">Mais de 3.5kg</label></div>
+                                </div>
+                            </div>
+                            <div class="carousel-buttons">
+                                <button type="button" class="next-slide">Próxima <i class="fas fa-chevron-right"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="quiz-slide" data-index="1">
+                            <div class="quiz-question-content">
+                                <label>2. Quando você acha que o Adriel vai nascer?</label>
+                                <div class="quiz-options">
+                                    <div><input type="radio" name="pergunta2" value="antes" id="p2a" required><label for="p2a">Antes da data prevista</label></div>
+                                    <div><input type="radio" name="pergunta2" value="na data" id="p2b"><label for="p2b">Na data prevista</label></div>
+                                    <div><input type="radio" name="pergunta2" value="depois" id="p2c"><label for="p2c">Depois da data prevista</label></div>
+                                </div>
+                            </div>
+                            <div class="carousel-buttons">
+                                <button type="button" class="prev-slide"><i class="fas fa-chevron-left"></i> Anterior</button>
+                                <button type="button" class="next-slide">Próxima <i class="fas fa-chevron-right"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="quiz-slide" data-index="2">
+                            <div class="quiz-question-content">
+                                <label>3. A quem o Adriel se parecerá mais?</label>
+                                <div class="quiz-options">
+                                    <div><input type="radio" name="pergunta3" value="mamae" id="p3a" required><label for="p3a">À Mamãe</label></div>
+                                    <div><input type="radio" name="pergunta3" value="papai" id="p3b"><label for="p3b">Ao Papai</label></div>
+                                    <div><input type="radio" name="pergunta3" value="mistura" id="p3c"><label for="p3c">Uma mistura dos dois!</label></div>
+                                </div>
+                            </div>
+                            <div class="carousel-buttons">
+                                <button type="button" class="prev-slide"><i class="fas fa-chevron-left"></i> Anterior</button>
+                                <button type="button" class="next-slide">Próxima <i class="fas fa-chevron-right"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="quiz-slide" data-index="3">
+                            <div class="quiz-question-content">
+                                <label for="pergunta4">4. Qual conselho você daria aos futuros pais?</label>
+                                <textarea id="pergunta4" name="pergunta4" placeholder="Deixe um conselho especial..." required></textarea>
+                            </div>
+                            <div class="carousel-buttons">
+                                <button type="button" class="prev-slide"><i class="fas fa-chevron-left"></i> Anterior</button>
+                                <button type="submit">Enviar <i class="fas fa-paper-plane"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <p id="quizMessage" style="text-align: center; margin-top: 20px; font-weight: bold;"></p>
+        </section>
+
+        <section id="mural-recados">
+            <h2>Mural de Carinho</h2>
+            <p style="text-align: center; margin-bottom: 25px;">Deixe sua mensagem especial para o Adriel e para a nossa família!</p>
+            <form id="guestbookForm">
+                <div class="form-group">
+                    <label for="mensagemMural">Sua Mensagem:</label>
+                    <textarea id="mensagemMural" name="mensagemMural" placeholder="Escreva sua mensagem aqui..." required></textarea>
+                </div>
+                <button type="submit">Deixar Mensagem</button>
+            </form>
+            <p id="guestbookMessage" style="text-align: center; margin-top: 20px; font-weight: bold;"></p>
+            
+            <h3>Recados dos Amigos e Família:</h3>
+            <div class="guestbook-messages" id="guestbookMessagesContainer">
+                <div class="message-card">
+                    <strong>Exemplo de Convidado</strong>
+                    <p>Que alegria celebrar a chegada do Adriel! Muita saúde e felicidades para toda a família!</p>
+                </div>
+                <div class="message-card">
+                    <strong>Outro Convidado</strong>
+                    <p>Mal posso esperar para conhecer o Adriel! Parabéns aos papais!</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="instagram-feed-section">
+            <h2>Momentos com #AdrielNicolas</h2>
+            <div class="instagram-feed">
+                <i class="fab fa-instagram" style="font-size: 3em; color: #8a3ab9; margin-bottom: 15px;"></i>
+                <p>Use a hashtag <span class="hashtag">#AdrielNicolasCha</span> no Instagram para compartilhar seus momentos e ver as fotos do nosso chá de fraldas! Suas fotos aparecerão aqui em breve!</p>
+                <p style="font-size: 0.9em;">(Esta área será atualizada automaticamente com as fotos da hashtag)</p>
+            </div>
+        </section>
+
+    </div>
+
+   <script>
+    // Variável global para armazenar o nome do convidado
+    let guestName = '';
+    const scriptUrl = 'https://script.google.com/macros/s/AKfycbxnmNrKQ3V9v5MrEuEHlX4zlMxjkrUsqb8SeGignWp84WIDJEHSV1KBysvXxY6IAGaB/exec'; // SUBSTITUA POR SUA URL DO APPS SCRIPT!
+    
+    // Funções para enviar dados para a planilha
+    async function sendDataToSheet(action, data) {
+        try {
+            const response = await fetch(scriptUrl, {
+                method: 'POST',
+                body: JSON.stringify({ ...data, action: action }),
+                headers: { 'Content-Type': 'application/json' }
+            });
+            const result = await response.json();
+            return result;
+        } catch (error) {
+            console.error('Erro na requisição:', error);
+            return { success: false, message: 'Erro na conexão. Tente novamente.' };
+        }
+    }
+    
+    // Lidar com o formulário de boas-vindas
+    document.getElementById('welcomeForm').addEventListener('submit', (event) => {
+        event.preventDefault();
+        const inputName = document.getElementById('guestNameInput').value;
+        if (inputName) {
+            guestName = inputName;
+            document.getElementById('welcomeModal').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'block';
+        }
+    });
+
+    // ============== JAVASCRIPT PARA INTERATIVIDADE (Agora com back-end real) ==============
+    
+    // Gerar números da rifa
+    const raffleNumbersGrid = document.getElementById('raffleNumbersGrid');
+    let selectedRaffleNumber = null;
+    const confirmNumberSpan = document.getElementById('confirmNumber');
+    const fraldaSizeSelect = document.getElementById('fraldaSize');
+    const raffleConfirmModal = document.getElementById('raffleConfirmModal');
+    const selectedRaffleNumberInputModal = document.getElementById('selectedRaffleNumberModal');
+
+    function generateRaffleNumbers() {
+        raffleNumbersGrid.innerHTML = '';
+        for (let i = 1; i <= 100; i++) {
+            const numberDiv = document.createElement('div');
+            numberDiv.classList.add('raffle-number-item');
+            numberDiv.textContent = i;
+            numberDiv.dataset.number = i;
+
+            if (i % 7 === 0 || i % 13 === 0) { // Exemplo de números ocupados
+                numberDiv.classList.add('taken');
+            } else {
+                numberDiv.classList.add('available');
+                numberDiv.addEventListener('click', () => {
+                    if (!numberDiv.classList.contains('taken')) {
+                        const currentSelected = document.querySelector('.raffle-number-item.selected');
+                        if (currentSelected) {
+                            currentSelected.classList.remove('selected');
+                        }
+                        numberDiv.classList.add('selected');
+                        selectedRaffleNumber = i;
+                        document.getElementById('selectedRaffleNumber').textContent = i;
+                        
+                        confirmNumberSpan.textContent = i;
+                        selectedRaffleNumberInputModal.value = i;
+                        
+                        if (i >= 1 && i <= 20) {
+                            fraldaSizeSelect.value = 'P';
+                        } else if (i >= 21 && i <= 70) {
+                            fraldaSizeSelect.value = 'M';
+                        } else if (i >= 71 && i <= 100) {
+                            fraldaSizeSelect.value = 'G';
+                        }
+                        
+                        raffleConfirmModal.style.display = 'flex';
+                    }
+                });
+            }
+            raffleNumbersGrid.appendChild(numberDiv);
+        }
+    }
+    generateRaffleNumbers();
+
+    // Lidar com o formulário de confirmação da rifa no modal
+    document.getElementById('raffleConfirmForm').addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const rsvpMessage = document.getElementById('rsvpMessage');
+        const horario = document.getElementById('horario').value;
+        
+        if (!horario) {
+            rsvpMessage.textContent = 'Por favor, selecione um horário no formulário principal antes de confirmar a rifa.';
+            rsvpMessage.style.color = 'red';
+            raffleConfirmModal.style.display = 'none';
+            return;
+        }
+
+        const data = {
+            nome: guestName,
+            numeroRifa: document.getElementById('selectedRaffleNumberModal').value,
+            tamanhoFralda: document.getElementById('fraldaSize').value,
+            horario: horario
+        };
+
+        const result = await sendDataToSheet('raffle', data);
+        
+        if (result.success) {
+            rsvpMessage.textContent = `Obrigado, ${guestName}! Seu horário (${horario}) e número da rifa (${data.numeroRifa}) foram registrados!`;
+            rsvpMessage.style.color = 'green';
+            const selectedDiv = document.querySelector(`.raffle-number-item[data-number="${data.numeroRifa}"]`);
+            if (selectedDiv) {
+                selectedDiv.classList.remove('selected', 'available');
+                selectedDiv.classList.add('taken');
+            }
+            selectedRaffleNumber = null;
+            document.getElementById('selectedRaffleNumber').textContent = 'Nenhum';
+        } else {
+            rsvpMessage.textContent = `Erro ao registrar: ${result.message}`;
+            rsvpMessage.style.color = 'red';
+        }
+        
+        raffleConfirmModal.style.display = 'none';
+    });
+
+    // Cancelar a seleção da rifa
+    document.getElementById('cancelRaffleBtn').addEventListener('click', () => {
+        const currentSelected = document.querySelector('.raffle-number-item.selected');
+        if (currentSelected) {
+            currentSelected.classList.remove('selected');
+        }
+        document.getElementById('selectedRaffleNumber').textContent = 'Nenhum';
+        selectedRaffleNumber = null;
+        raffleConfirmModal.style.display = 'none';
+    });
+
+
+    // ---- Submissão do Formulário de Agendamento ----
+    document.getElementById('rsvpForm').addEventListener('submit', async function(event) {
+        event.preventDefault();
+        const horario = document.getElementById('horario').value;
+        const rsvpMessage = document.getElementById('rsvpMessage');
+
+        const data = {
+            nome: guestName,
+            horario: horario
+        };
+        
+        const result = await sendDataToSheet('rsvp', data);
+
+        if (result.success) {
+            rsvpMessage.textContent = `Olá, ${guestName}! Seu horário (${horario}) foi agendado com sucesso!`;
+            rsvpMessage.style.color = 'green';
+            this.reset();
+        } else {
+            rsvpMessage.textContent = `Erro ao agendar: ${result.message}`;
+            rsvpMessage.style.color = 'red';
+        }
+    });
+
+    // ---- Submissão do Formulário do Quiz ----
+    const quizForm = document.getElementById('quizForm');
+    quizForm.addEventListener('submit', async function(event) {
+        event.preventDefault();
+        const quizMessage = document.getElementById('quizMessage');
+        
+        const data = {
+            nome: guestName,
+            peso: document.querySelector('input[name="pergunta1"]:checked')?.value,
+            nascimento: document.querySelector('input[name="pergunta2"]:checked')?.value,
+            parecido: document.querySelector('input[name="pergunta3"]:checked')?.value,
+            conselho: document.getElementById('pergunta4').value
+        };
+        
+        const result = await sendDataToSheet('quiz', data);
+        
+        if (result.success) {
+            quizMessage.textContent = 'Obrigado por participar! Seus palpites foram registrados!';
+            quizMessage.style.color = 'green';
+            this.reset();
+        } else {
+            quizMessage.textContent = `Erro ao enviar: ${result.message}`;
+            quizMessage.style.color = 'red';
+        }
+    });
+
+    // Lógica do Carrossel e Barra de Progresso do Quiz
+    const quizSlides = document.querySelector('.quiz-slides');
+    const quizProgress = document.getElementById('quizProgress');
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.quiz-slide');
+    const totalSlides = slides.length;
+    
+    document.querySelectorAll('.next-slide').forEach(button => {
+        button.addEventListener('click', () => {
+            if (currentSlide < totalSlides - 1) {
+                currentSlide++;
+                updateQuizCarousel();
+            }
+        });
+    });
+    
+    document.querySelectorAll('.prev-slide').forEach(button => {
+        button.addEventListener('click', () => {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateQuizCarousel();
+            }
+        });
+    });
+    
+    function updateQuizCarousel() {
+        quizSlides.style.transform = `translateX(-${currentSlide * 100}%)`;
+        updateProgressBar();
+    }
+
+    function updateProgressBar() {
+        const progress = ((currentSlide + 1) / totalSlides) * 100;
+        quizProgress.style.width = `${progress}%`;
+    }
+
+    updateProgressBar();
+
+    // ---- Submissão do Formulário do Mural de Recados ----
+    document.getElementById('guestbookForm').addEventListener('submit', async function(event) {
+        event.preventDefault();
+        const mensagemMural = document.getElementById('mensagemMural').value;
+        const guestbookMessage = document.getElementById('guestbookMessage');
+        const guestbookMessagesContainer = document.getElementById('guestbookMessagesContainer');
+
+        const data = {
+            nome: guestName,
+            mensagem: mensagemMural
+        };
+
+        const result = await sendDataToSheet('guestbook', data);
+        
+        if (result.success) {
+            const newMessageCard = document.createElement('div');
+            newMessageCard.classList.add('message-card');
+            newMessageCard.innerHTML = `<strong>${guestName}</strong><p>${mensagemMural}</p>`;
+            guestbookMessagesContainer.prepend(newMessageCard);
+            guestbookMessage.textContent = 'Sua mensagem foi adicionada ao mural com sucesso!';
+            guestbookMessage.style.color = 'green';
+            this.reset();
+        } else {
+            guestbookMessage.textContent = `Erro ao enviar: ${result.message}`;
+            guestbookMessage.style.color = 'red';
+        }
+    });
+
+    // Exibir o modal de boas-vindas ao carregar a página
+    document.addEventListener('DOMContentLoaded', () => {
+        document.getElementById('welcomeModal').style.display = 'flex';
+    });
+</script>
+</body>
+</html>
